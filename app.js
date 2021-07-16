@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.options('*', cors());
 
-cron.schedule('0 0 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
   const users = await User.find();
   users.forEach(async (user) => {
     if (user.role === 'user') {
