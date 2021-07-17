@@ -15,7 +15,7 @@ exports.aliasNotArhived = (req, res, next) => {
   req.query.arhived = 'notarhived';
   req.query.sort = '-createdAt';
   req.query.fields =
-    'baseNumber,subnumber,shortText,recipientSender,paperType,createdAt';
+    'baseNumber,subnumber,shortText,recipientSender,paperType,createdAt,-processor';
   next();
 };
 
