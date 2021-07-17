@@ -11,6 +11,14 @@ exports.aliasCurentYearPapers = (req, res, next) => {
   next();
 };
 
+exports.aliasNotArhived = (req, res, next) => {
+  req.query.arhived = 'notarhived';
+  req.query.sort = '-createdAt';
+  req.query.fields =
+    'baseNumber,subnumber,shortText,recipientSender,paperType,createdAt';
+  next();
+};
+
 //get number of papers in papers collections that are in certain category-baseNumber
 exports.getPapersNumForCategory = catchAsync(async (req, res, next) => {
   const paperNum = await Paper.aggregate([

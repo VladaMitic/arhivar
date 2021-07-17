@@ -21,6 +21,14 @@ router
     paperController.getAllPaper
   );
 
+router
+  .route('/getNotArhivedPapers')
+  .get(
+    paperController.aliasNotArhived,
+    authController.setUserIdToQuery,
+    paperController.getAllPaper
+  );
+
 // router
 //   .route('/prepareForArhive')
 //   .post(authController.setUserIdToBody, paperController.test);
