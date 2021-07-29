@@ -49,7 +49,6 @@ const userSchema = new mongoose.Schema(
         },
         message: 'Матицни број фирме мора бити дужине 8 цифара',
       },
-      unique: true,
     },
     taxId: {
       type: String,
@@ -60,7 +59,6 @@ const userSchema = new mongoose.Schema(
         },
         message: 'ПИБ мора бити дужине 9 цифара',
       },
-      unique: true,
     },
     place: {
       type: String,
