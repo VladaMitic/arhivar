@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (val) {
-          return val.length === 13;
+          return val && val.length === 13;
         },
         message: 'ЈМБГ мора бити дужине 13 цифара',
       },
@@ -45,9 +45,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (val) {
-          if (val) {
-            return val.length === 8;
-          }
+          return val && val.length === 8;
         },
         message: 'Матицни број фирме мора бити дужине 8 цифара',
       },
@@ -57,9 +55,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (val) {
-          if (val) {
-            return val.length === 9;
-          }
+          return val && val.length === 9;
         },
         message: 'ПИБ мора бити дужине 9 цифара',
       },
