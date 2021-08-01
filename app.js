@@ -34,6 +34,7 @@ const corsOptions = {
   headers: ['Content-Length', 'Content-Type', 'Authorization'],
 };
 
+//proveriti da li ovo treba ili ne, ako ne da se izbrise
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -111,7 +112,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const limiter = rateLimit({
-  max: 150,
+  max: 1500,
   windowMs: 60 * 60 * 1000,
   message: 'To many requests from this IP. Please try again in an hour.',
 });
