@@ -28,8 +28,14 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors());
-app.options('*', cors());
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  headers: ['Content-Length', 'Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 cron.schedule('0 0 */1 * * *', async () => {
   const users = await User.find();
