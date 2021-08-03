@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
         validator: function (val) {
           return val && val.length === 8;
         },
-        message: 'Матицни број фирме мора бити дужине 8 цифара',
+        message: 'Матични број фирме мора бити дужине 8 цифара',
       },
     },
     taxId: {
@@ -109,6 +109,12 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
+    },
+    contactEmail: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'Контакт емаил адреса није валидна'],
     },
     role: {
       type: String,
