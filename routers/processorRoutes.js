@@ -8,6 +8,14 @@ router.use(authController.protect);
 router.use(authController.restrictTo('user', 'admin'));
 
 router
+  .route('/activeProcessors')
+  .get(
+    processorController.aliasActiveProcessors,
+    authController.setUserIdToQuery,
+    processorController.getAllProcessor
+  );
+
+router
   .route('/')
   .get(authController.setUserIdToQuery, processorController.getAllProcessor)
   .post(authController.setUserIdToBody, processorController.createProcessor);

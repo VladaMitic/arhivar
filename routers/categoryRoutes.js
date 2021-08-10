@@ -8,6 +8,14 @@ router.use(authController.protect);
 router.use(authController.restrictTo('user', 'admin'));
 
 router
+  .route('/activeCategory')
+  .get(
+    categoryController.aliasActiveCategory,
+    authController.setUserIdToQuery,
+    categoryController.getAllCategory
+  );
+
+router
   .route('/')
   .get(authController.setUserIdToQuery, categoryController.getAllCategory)
   .post(authController.setUserIdToBody, categoryController.createCategory);

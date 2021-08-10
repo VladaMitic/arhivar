@@ -23,6 +23,10 @@ const categorySchema = new mongoose.Schema(
       min: [1, 'Рок чувања не може бити мањи од 1 године'],
       required: [true, 'Морате унети рок чувања'],
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
@@ -34,6 +38,8 @@ const categorySchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+categorySchema.index({ baseNumber: 1, name: 1, user: 1 }, { unique: true });
 
 const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;
