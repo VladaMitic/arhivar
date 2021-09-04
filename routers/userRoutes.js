@@ -4,12 +4,9 @@ const authController = require('../controllers/authController');
 const processorRouter = require('./processorRoutes');
 const categoryRouter = require('./categoryRoutes');
 const paperRouter = require('./paperRoutes');
+const setCurrentYear = require('../utils/setCurrentYear');
 
 const router = express.Router();
-
-router.use('/:userId/processor', processorRouter);
-router.use('/:userId/category', categoryRouter);
-router.use('/:userId/paper', paperRouter);
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
@@ -23,6 +20,16 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
+router
+  .route('/countAllUsers')
+  .get(authController.setUserIdToQuery, userController.countAllUser);
+router
+  .route('/countCurrentYearUsers')
+  .get(
+    authController.setUserIdToQuery,
+    setCurrentYear.setCurrentYear,
+    userController.countAllUser
+  );
 
 router.use(authController.restrictTo('admin'));
 
@@ -35,5 +42,9 @@ router
   .get(userController.getUser)
   .patch(userController.subscribeUser, userController.updateUser)
   .delete(userController.deleteUser);
+
+router.use('/:userId/processor', processorRouter);
+router.use('/:userId/category', categoryRouter);
+router.use('/:userId/paper', paperRouter);
 
 module.exports = router;

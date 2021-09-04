@@ -8,6 +8,7 @@ exports.aliasCurentYearArhive = (req, res, next) => {
   next();
 };
 
+exports.countAllArhives = factory.countDocuments(Arhive);
 exports.getAllArhive = factory.getAll(Arhive);
 exports.getArhive = factory.getOne(Arhive, {
   path: 'papersPop',

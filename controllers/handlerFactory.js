@@ -80,3 +80,15 @@ exports.getAll = (Model) =>
       },
     });
   });
+
+exports.countDocuments = (Model) =>
+  catchAsync(async (req, res, next) => {
+    console.log(req.query);
+    const numDocs = await Model.find(req.query).countDocuments();
+    res.status(200).json({
+      status: 'sucess',
+      data: {
+        data: numDocs,
+      },
+    });
+  });

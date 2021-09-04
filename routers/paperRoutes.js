@@ -1,6 +1,7 @@
 const express = require('express');
 const paperController = require('../controllers/paperController');
 const authController = require('../controllers/authController');
+const setCurrentYear = require('../utils/setCurrentYear');
 
 const router = express.Router({ mergeParams: true });
 
@@ -12,6 +13,17 @@ router
   .get(paperController.getPapersNumForCategory);
 
 router.route('/recSendData').get(paperController.getRecipientsSenders);
+
+router
+  .route('/countAllPapers')
+  .get(authController.setUserIdToQuery, paperController.countAllPapers);
+router
+  .route('/countCurrentYearPapers')
+  .get(
+    authController.setUserIdToQuery,
+    setCurrentYear.setCurrentYear,
+    paperController.countAllPapers
+  );
 
 router
   .route('/currentYearPapers')
@@ -28,10 +40,6 @@ router
     authController.setUserIdToQuery,
     paperController.getAllPaper
   );
-
-// router
-//   .route('/prepareForArhive')
-//   .post(authController.setUserIdToBody, paperController.test);
 
 router
   .route('/prepareForArhive')

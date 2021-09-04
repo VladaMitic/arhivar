@@ -19,7 +19,7 @@ const handleValidationErrorDB = (err) => {
 };
 
 const handleJWTError = () =>
-  new AppError('Токен није! Молим Вас пријавите се поново.', 401);
+  new AppError('Токен није валидан! Молим Вас пријавите се поново.', 401);
 
 const handleJWTExpiredError = () =>
   new AppError('Ваш токен је истекао! Молим Вас пријавите се поново.', 401);

@@ -154,6 +154,7 @@ exports.test = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.countAllPapers = factory.countDocuments(Paper);
 exports.getAllPaper = factory.getAll(Paper);
 exports.getPaper = factory.getOne(Paper);
 exports.createPaper = factory.createOne(Paper);
