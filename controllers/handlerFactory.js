@@ -83,8 +83,8 @@ exports.getAll = (Model) =>
 
 exports.countDocuments = (Model) =>
   catchAsync(async (req, res, next) => {
-    console.log(req.query);
-    const numDocs = await Model.find(req.query).countDocuments();
+    const features = new APIFeatures(Model.find(), req.query).filter();
+    const numDocs = await features.query.countDocuments();
     res.status(200).json({
       status: 'sucess',
       data: {
