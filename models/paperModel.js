@@ -102,7 +102,8 @@ paperSchema.pre('save', async function (next) {
     })
     .sort('-createdAt')
     .limit(1);
-  if (!papers) {
+
+  if (papers.length <= 0) {
     this.subnumber = '1';
   } else {
     const newPaperSubnumber = papers[0].subnumber * 1 + 1;
