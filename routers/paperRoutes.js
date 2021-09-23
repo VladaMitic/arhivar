@@ -8,9 +8,18 @@ const router = express.Router({ mergeParams: true });
 router.use(authController.protect);
 router.use(authController.restrictTo('user', 'admin'));
 
+// router
+//   .route('/paper-number/:categoryId')
+//   .get(paperController.getPapersNumForCategory);
+
 router
   .route('/paper-number/:categoryId')
-  .get(paperController.getPapersNumForCategory);
+  .get(
+    authController.setUserIdToQuery,
+    setCurrentYear.setCurrentYear,
+    paperController.aliasGetPapersNumForCategory,
+    paperController.getAllPaper
+  );
 
 router.route('/recSendData').get(paperController.getRecipientsSenders);
 
@@ -28,16 +37,18 @@ router
 router
   .route('/currentYearPapers')
   .get(
-    paperController.aliasCurentYearPapers,
     authController.setUserIdToQuery,
+    setCurrentYear.setCurrentYear,
+    paperController.aliasCurentYearPapers,
     paperController.getAllPaper
   );
 
 router
   .route('/getNotArhivedPapers')
   .get(
-    paperController.aliasNotArhived,
     authController.setUserIdToQuery,
+    paperController.setPreparingOnNotarhived,
+    paperController.aliasNotArhived,
     paperController.getAllPaper
   );
 

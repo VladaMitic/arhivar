@@ -5,14 +5,32 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.aliasCurentYearPapers = (req, res, next) => {
-  const yearNow = new Date(Date.now()).getFullYear();
-  req.query.createdAt = { gte: new Date(`${yearNow}-01-01`) };
   req.query.sort = '-createdAt';
   next();
 };
 
+//seting arhived field, those that are set on preparing by previous actions, to notarhive (eg. reset arhive process when it is braked)
+exports.setPreparingOnNotarhived = catchAsync(async (req, res, next) => {
+  const papers = await Paper.find({ arhived: 'preparing', ...req.query });
+  if (!papers) {
+    return next();
+  }
+  papers.forEach(async (paper) => {
+    await Paper.findByIdAndUpdate(
+      paper._id,
+      { arhived: 'notarhived' },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  });
+  next();
+});
+
+//alias for geting all not arhived papers (notarhived and preparing)
 exports.aliasNotArhived = (req, res, next) => {
-  req.query.arhived = 'notarhived';
+  req.query.arhived = ['notarhived', 'preparing'];
   req.query.sort = '-createdAt';
   req.query.fields =
     'baseNumber,subnumber,shortText,recipientSender,paperType,createdAt,-processor';
@@ -20,31 +38,13 @@ exports.aliasNotArhived = (req, res, next) => {
 };
 
 //get number of papers in papers collections that are in certain category-baseNumber
-exports.getPapersNumForCategory = catchAsync(async (req, res, next) => {
-  const paperNum = await Paper.aggregate([
-    {
-      $match: {
-        user: mongoose.Types.ObjectId(req.user.id),
-        baseNumber: mongoose.Types.ObjectId(req.params.categoryId),
-      },
-    },
-    {
-      $group: {
-        _id: '$baseNumber',
-        numPapers: { $sum: 1 },
-      },
-    },
-    {
-      $project: { _id: 0 },
-    },
-  ]);
-  res.status(200).json({
-    status: 'sucess',
-    data: {
-      paperNum,
-    },
-  });
-});
+exports.aliasGetPapersNumForCategory = (req, res, next) => {
+  req.query.baseNumber = req.params.categoryId;
+  req.query.sort = '-createdAt';
+  req.query.fields = 'subnumber,-processor,-baseNumber';
+  req.query.limit = 1;
+  next();
+};
 
 //get data of all original sender and recipients of current user
 exports.getRecipientsSenders = catchAsync(async (req, res, next) => {
@@ -125,31 +125,6 @@ exports.createArhiveTemplate = catchAsync(async (req, res, next) => {
     status: 'sucess',
     data: {
       arhiveTemplate,
-    },
-  });
-});
-
-exports.test = catchAsync(async (req, res, next) => {
-  if (!req.body.papersArhive)
-    return next(
-      new AppError('Не постоје подаци о документима који се архивирају.', 400)
-    );
-  if (!Array.isArray(req.body.papersArhive))
-    return next(
-      new AppError('Подаци нису у одговарајућем формату (низу).', 400)
-    );
-  const updated = await Paper.updateMany(
-    { _id: { $in: req.body.papersArhive } },
-    { arhived: 'notarhived' },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  res.status(200).json({
-    status: 'sucess',
-    data: {
-      updated,
     },
   });
 });

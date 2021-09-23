@@ -19,8 +19,7 @@ const createAndSendToken = (user, statusCode, req, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: true,
-    //req.secure || req.headers('x-forwarded-proto') === 'https',
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
   };
 
   res.cookie('jwt', token, cookieOptions);
@@ -178,7 +177,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
 
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new AppError('Неисптавна лозинка.', 401));
+    return next(new AppError('Неисправна лозинка.', 401));
   }
 
   user.password = req.body.password;

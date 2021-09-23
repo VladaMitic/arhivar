@@ -22,8 +22,17 @@ router
 router
   .route('/currentYearArhive')
   .get(
-    arhiveController.aliasCurentYearArhive,
     authController.setUserIdToQuery,
+    setCurrentYear.setCurrentYear,
+    arhiveController.aliasCurentYearArhive,
+    arhiveController.getAllArhive
+  );
+
+router
+  .route('/notDestroyedArhive')
+  .get(
+    authController.setUserIdToQuery,
+    arhiveController.aliasNotDestroyedPapers,
     arhiveController.getAllArhive
   );
 
@@ -38,4 +47,5 @@ router
   .delete(arhiveController.deleteArhive)
   .patch(arhiveController.updateArhive);
 
+//dodati marge parametar relacije arhive paper (da se preko id arive pristupi papirima)
 module.exports = router;

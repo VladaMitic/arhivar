@@ -145,7 +145,7 @@ const userSchema = new mongoose.Schema(
         validator: function (val) {
           return val === this.password;
         },
-        message: 'Унета лозинка и потврда лоинке се не подударају',
+        message: 'Унета лозинка и потврда лозинке се не подударају',
       },
     },
     passwordChangedAt: Date,

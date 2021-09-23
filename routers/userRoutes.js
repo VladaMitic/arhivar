@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 const processorRouter = require('./processorRoutes');
 const categoryRouter = require('./categoryRoutes');
 const paperRouter = require('./paperRoutes');
-const setCurrentYear = require('../utils/setCurrentYear');
+// const setCurrentYear = require('../utils/setCurrentYear');
 
 const router = express.Router();
 
@@ -23,13 +23,13 @@ router.delete('/deleteMe', userController.deleteMe);
 router
   .route('/countAllUsers')
   .get(authController.setUserIdToQuery, userController.countAllUser);
-router
-  .route('/countCurrentYearUsers')
-  .get(
-    authController.setUserIdToQuery,
-    setCurrentYear.setCurrentYear,
-    userController.countAllUser
-  );
+// router
+//   .route('/countCurrentYearUsers')
+//   .get(
+//     authController.setUserIdToQuery,
+//     setCurrentYear.setCurrentYear,
+//     userController.countAllUser
+//   );
 
 router.use(authController.restrictTo('admin'));
 

@@ -20,6 +20,9 @@ const arhiveSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    createdAtYear: {
+      type: String,
+    },
     papersFrom: {
       type: Date,
       required: [
@@ -49,9 +52,11 @@ const arhiveSchema = new mongoose.Schema(
     recordNumber: {
       type: String,
       trim: true,
+      default: 'N/A',
     },
     recordDate: {
       type: Date,
+      default: 'N/A',
     },
     shelfLifeTo: {
       type: Number,
@@ -82,6 +87,11 @@ const arhiveSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+arhiveSchema.pre('save', async function (next) {
+  const year = this.createdAt.getFullYear();
+  this.createdAtYear = year;
+});
 
 arhiveSchema.virtual('papersPop', {
   ref: 'Paper',

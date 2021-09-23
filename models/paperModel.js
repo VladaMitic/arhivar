@@ -9,7 +9,6 @@ const paperSchema = new mongoose.Schema(
     },
     subnumber: {
       type: String,
-      required: [true, 'Документ мора да има подброј'],
     },
     shortText: {
       type: String,
@@ -78,12 +77,39 @@ const paperSchema = new mongoose.Schema(
     arhivedAt: {
       type: Date,
     },
+    createdAtYear: {
+      type: String,
+    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
+
+paperSchema.index(
+  { baseNumber: 1, subnumber: 1, user: 1, createdAtYear: 1 },
+  { unique: true }
+);
+
+paperSchema.pre('save', async function (next) {
+  const year = this.createdAt.getFullYear();
+  const papers = await this.constructor
+    .find({
+      baseNumber: this.baseNumber,
+      user: this.user,
+      createdAt: { $gte: new Date(`${this.year}-01-01`) }, //da li ovo ovakod a ostane ili po godini da ide
+    })
+    .sort('-createdAt')
+    .limit(1);
+  if (!papers) {
+    this.subnumber = '1';
+  } else {
+    const newPaperSubnumber = papers[0].subnumber * 1 + 1;
+    this.subnumber = newPaperSubnumber.toString();
+  }
+  this.createdAtYear = year;
+});
 
 paperSchema.pre(/^find/, function (next) {
   this.populate({
