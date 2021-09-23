@@ -87,10 +87,10 @@ const paperSchema = new mongoose.Schema(
   }
 );
 
-paperSchema.index(
-  { baseNumber: 1, subnumber: 1, user: 1, createdAtYear: 1 },
-  { unique: true }
-);
+// paperSchema.index(
+//   { baseNumber: 1, subnumber: 1, user: 1, createdAtYear: 1 },
+//   { unique: true }
+// );
 
 paperSchema.pre('save', async function (next) {
   const year = this.createdAt.getFullYear();
