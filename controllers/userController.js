@@ -30,6 +30,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     req.body,
     'firstName',
     'lastName',
+    'businessName',
     'email',
     'nationalId',
     'identificationNumber',
