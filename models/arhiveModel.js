@@ -56,7 +56,6 @@ const arhiveSchema = new mongoose.Schema(
     },
     recordDate: {
       type: Date,
-      default: 'N/A',
     },
     shelfLifeTo: {
       type: Number,
