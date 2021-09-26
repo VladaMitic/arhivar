@@ -11,7 +11,7 @@ exports.aliasCurentYearPapers = (req, res, next) => {
 
 //seting arhived field, those that are set on preparing by previous actions, to notarhive (eg. reset arhive process when it is braked)
 exports.setPreparingOnNotarhived = catchAsync(async (req, res, next) => {
-  const queryObj = { ...this.queryString };
+  const queryObj = { ...req.query };
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach((el) => delete queryObj[el]);
   const papers = await Paper.find({ arhived: 'preparing', ...queryObj });
