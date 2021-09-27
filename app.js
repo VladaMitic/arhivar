@@ -29,7 +29,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  //origin: 'http://localhost:3000',
+  origin: 'https://record-book-app.herokuapp.com/',
   credentials: true,
   headers: ['Content-Length', 'Content-Type', 'Authorization'],
 };
