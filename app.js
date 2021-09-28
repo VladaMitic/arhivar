@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const corsOptions = {
   //origin: 'http://localhost:3000',
-  origin: 'https://arhivar-app.herokuapp.com',
+  origin: /.herokuapp.com$/,
   credentials: true,
   headers: ['Content-Length', 'Content-Type', 'Authorization'],
 };
