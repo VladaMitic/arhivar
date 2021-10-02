@@ -94,7 +94,7 @@ exports.subscribeUser = catchAsync(async (req, res, next) => {
 });
 
 exports.countAllUser = factory.countDocuments(User);
-exports.getAllUsers = factory.getAll(User);
+exports.getAllUsers = factory.getAll(User, '+active');
 exports.getUser = factory.getOne(User, {
   path: 'processors categories',
 });
