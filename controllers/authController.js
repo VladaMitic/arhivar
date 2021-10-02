@@ -53,7 +53,12 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Молимо Вас унесите епошту и лозинку', 400));
   }
 
-  const user = await User.findOne({ email: email }).select('+password');
+  const user = await User.findOne({ email: email })
+    .select('+password')
+    .select('+active');
+  if (!user.active) {
+    return next(new AppError('Кориснички налог је обрисан'), 401);
+  }
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Неисправна епошта и лозинка', 401));
   }
@@ -75,7 +80,11 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await User.findById(decoded.id).select('+active');
+  console.log(currentUser.active);
+  if (!currentUser.active) {
+    return next(new AppError('Кориснички налог је обрисан'), 401);
+  }
   if (!currentUser) {
     return next(
       new AppError('Корисик чији је ово токен више не постоји.', 401)

@@ -2,8 +2,10 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
-let adminsIDs = [];
+const Category = require('./categoryModel');
+const Processor = require('./processorModel');
+const Paper = require('./paperModel');
+const Arhive = require('./arhiveModel');
 
 const userSchema = new mongoose.Schema(
   {
@@ -191,17 +193,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-//pre find middlever that dont alow users who deleted they account to acess account, but alowes administrators tor review deleted users
-userSchema.pre(/^find/, async function (next) {
-  if (this._conditions._id) {
-    const currentUserId = this._conditions._id;
-    if (adminsIDs.includes(currentUserId)) {
-      next();
-    } else {
-      this.find({ active: { $ne: false } });
-      next();
-    }
-  }
+userSchema.pre('remove', async function (next) {
+  await Category.deleteMany({ user: this.id });
+  await Processor.deleteMany({ user: this.id });
+  await Paper.deleteMany({ user: this.id });
+  await Arhive.deleteMany({ user: this.id });
+  next();
 });
 
 userSchema.methods.correctPassword = async function (
@@ -235,19 +232,5 @@ userSchema.methods.createPasswordResetToken = function () {
 };
 
 const User = mongoose.model('User', userSchema);
-
-//deklaring and calling function that get all adlimistrators (expecialy thay id) from database, and set variable adminsIDs on it
-const getAdmins = async () => {
-  const users = await User.find({ role: 'admin' });
-  return users;
-};
-
-getAdmins()
-  .then((admins) => {
-    adminsIDs = admins.map((admin) => admin.id);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
 
 module.exports = User;
