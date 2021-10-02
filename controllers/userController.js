@@ -93,6 +93,11 @@ exports.subscribeUser = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.removeActiveQuery = (req, res, next) => {
+  console.log(req.query);
+  next();
+};
+
 exports.countAllUser = factory.countDocuments(User);
 exports.getAllUsers = factory.getAll(User, '+active');
 exports.getUser = factory.getOne(User, {

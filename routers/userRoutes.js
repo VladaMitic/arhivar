@@ -23,19 +23,12 @@ router.delete('/deleteMe', userController.deleteMe);
 router
   .route('/countAllUsers')
   .get(authController.setUserIdToQuery, userController.countAllUser);
-// router
-//   .route('/countCurrentYearUsers')
-//   .get(
-//     authController.setUserIdToQuery,
-//     setCurrentYear.setCurrentYear,
-//     userController.countAllUser
-//   );
 
 router.use(authController.restrictTo('admin'));
 
 router
   .route('/')
-  .get(userController.getAllUsers)
+  .get(userController.removeActiveQuery, userController.getAllUsers)
   .post(userController.createUser);
 router
   .route('/:id')

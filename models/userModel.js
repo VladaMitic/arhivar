@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
+let adminsIDs = [];
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -189,9 +191,17 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.pre(/^find/, function (next) {
-  this.find({ active: { $ne: false } });
-  next();
+//pre find middlever that dont alow users who deleted they account to acess account, but alowes administrators tor review deleted users
+userSchema.pre(/^find/, async function (next) {
+  if (this._conditions._id) {
+    const currentUserId = this._conditions._id;
+    if (adminsIDs.includes(currentUserId)) {
+      next();
+    } else {
+      this.find({ active: { $ne: false } });
+      next();
+    }
+  }
 });
 
 userSchema.methods.correctPassword = async function (
@@ -225,5 +235,19 @@ userSchema.methods.createPasswordResetToken = function () {
 };
 
 const User = mongoose.model('User', userSchema);
+
+//deklaring and calling function that get all adlimistrators (expecialy thay id) from database, and set variable adminsIDs on it
+const getAdmins = async () => {
+  const users = await User.find({ role: 'admin' });
+  return users;
+};
+
+getAdmins()
+  .then((admins) => {
+    adminsIDs = admins.map((admin) => admin.id);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 module.exports = User;
