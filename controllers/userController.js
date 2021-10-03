@@ -11,10 +11,6 @@ const filterObj = (obj, ...allowedFields) => {
   return newObject;
 };
 
-// exports.checkUserExistance = catchAsync(async (req, res, next) => {
-//   const user = await User.findOne(req.user.email);
-// })
-
 exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();

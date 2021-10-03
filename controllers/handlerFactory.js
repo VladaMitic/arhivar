@@ -4,12 +4,13 @@ const APIFeatures = require('../utils/apiFeatures');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndDelete(req.params.id);
+    const doc = await Model.findById(req.params.id);
     if (!doc) {
       return next(
         new AppError('Није пронађен документ са траженим ID-ом', 404)
       );
     }
+    doc.remove();
     res.status(204).json({
       status: 'sucess',
       data: null,

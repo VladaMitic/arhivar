@@ -81,7 +81,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   const currentUser = await User.findById(decoded.id).select('+active');
-  console.log(currentUser.active);
   if (!currentUser.active) {
     return next(new AppError('Кориснички налог је обрисан'), 401);
   }
