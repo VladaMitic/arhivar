@@ -115,7 +115,12 @@ exports.setUserIdToQuery = (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError('Немате дозволу за ову акцију!', 403));
+      return next(
+        new AppError(
+          'Немате дозволу за ову акцију! Сачекајте одобрење од администратора. Уколико не добијете одобрење позовите на број 064/6386892 или 064/1063236',
+          403
+        )
+      );
     }
     next();
   };
@@ -154,7 +159,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'Токен је послат на Вашу епошту!',
+    message:
+      'Токен је послат на Вашу епошту! Уколико не видите поруку у вашем сандучету, моломо Вас проверите фолдер Spam (Непожељно)',
   });
 });
 
