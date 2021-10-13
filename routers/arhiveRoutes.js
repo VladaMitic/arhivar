@@ -24,7 +24,7 @@ router
   .get(
     authController.setUserIdToQuery,
     setCurrentYear.setCurrentYear,
-    arhiveController.aliasCurentYearArhive,
+    arhiveController.aliasSortByCreatedAt,
     arhiveController.getAllArhive
   );
 
@@ -47,5 +47,4 @@ router
   .delete(arhiveController.deleteArhive)
   .patch(arhiveController.updateArhive);
 
-//dodati marge parametar relacije arhive paper (da se preko id arive pristupi papirima)
 module.exports = router;

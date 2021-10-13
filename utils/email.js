@@ -5,8 +5,10 @@ const htmlToText = require('html-to-text');
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
-    this.name = user.name ? user.email : 'корисниче';
-    this.url = url;
+    this.name = user.businessName
+      ? user.businessName
+      : `${user.firstName} ${user.lastName}`;
+    this.url = url || '';
     this.from =
       process.env.NODE_ENV === 'production'
         ? `Vlada <${process.env.EMAIL_FROM_PROD}>`
@@ -38,7 +40,7 @@ module.exports = class Email {
     const html = pug.renderFile(
       `${__dirname}/../views/emails/${template}.pug`,
       {
-        name: this.name,
+        name: this.name ? this.name : this.to,
         url: this.url,
         subject,
       }

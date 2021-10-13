@@ -1,7 +1,7 @@
 const Arhive = require('../models/arhiveModel');
 const factory = require('./handlerFactory');
 
-exports.aliasCurentYearArhive = (req, res, next) => {
+exports.aliasSortByCreatedAt = (req, res, next) => {
   req.query.sort = 'createdAt';
   next();
 };

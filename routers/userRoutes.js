@@ -20,12 +20,10 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
-router
-  .route('/countAllUsers')
-  .get(authController.setUserIdToQuery, userController.countAllUser);
 
 router.use(authController.restrictTo('admin'));
 
+router.route('/countAllUsers').get(userController.countAllUser);
 router
   .route('/')
   .get(userController.getAllUsers)
