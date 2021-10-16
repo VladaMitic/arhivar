@@ -75,21 +75,22 @@ exports.createUser = (req, res) => {
 };
 
 exports.subscribeUser = catchAsync(async (req, res, next) => {
-  if (!req.body.subscribe) next();
-  const user = await User.findById(req.params.id);
-  const subscriptionDate = Date.now();
-  const newSubscriptionTime = parseInt(
-    (user.subscriptionLeft - subscriptionDate) / (1000 * 60 * 60 * 24),
-    10
-  );
-  const subscriptionTime = user.subscriptionTime
-    ? newSubscriptionTime + 365
-    : 365;
-  req.body.subscriptionTime = subscriptionTime;
-  req.body.subscriptionDate = subscriptionDate;
-  req.body.subscriptionLeft = new Date(
-    Date.now() + subscriptionTime * 24 * 60 * 60 * 1000
-  );
+  if (req.body.subscribe) {
+    const user = await User.findById(req.params.id);
+    const subscriptionDate = Date.now();
+    const newSubscriptionTime = parseInt(
+      (user.subscriptionLeft - subscriptionDate) / (1000 * 60 * 60 * 24),
+      10
+    );
+    const subscriptionTime = user.subscriptionTime
+      ? newSubscriptionTime + 365
+      : 365;
+    req.body.subscriptionTime = subscriptionTime;
+    req.body.subscriptionDate = subscriptionDate;
+    req.body.subscriptionLeft = new Date(
+      Date.now() + subscriptionTime * 24 * 60 * 60 * 1000
+    );
+  }
   next();
 });
 
