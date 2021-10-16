@@ -53,6 +53,15 @@ router
   );
 
 router
+  .route('/countNotArhivedPapers')
+  .get(
+    authController.setUserIdToQuery,
+    paperController.setPreparingOnNotarhived,
+    paperController.aliasNotArhived,
+    paperController.countAllPapers
+  );
+
+router
   .route('/prepareForArhive')
   .post(
     authController.setUserIdToBody,

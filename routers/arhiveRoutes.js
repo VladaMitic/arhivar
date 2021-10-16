@@ -37,6 +37,14 @@ router
   );
 
 router
+  .route('/arhiveBook')
+  .get(
+    authController.setUserIdToQuery,
+    arhiveController.aliasSortByCreatedAt,
+    arhiveController.getAllArhive
+  );
+
+router
   .route('/')
   .get(authController.setUserIdToQuery, arhiveController.getAllArhive)
   .post(authController.setUserIdToBody, arhiveController.createArhive);
