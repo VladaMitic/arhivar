@@ -141,7 +141,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   try {
-    const resetURL = `${req.protocol}://arhivar.netlify.app/change-password/${resetToken}`;
+    const resetURL = `http://localhost:3000/change-password/${resetToken}`;
+    //`${req.protocol}://arhivar.netlify.app/change-password/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
   } catch (err) {
     user.passwordResetToken = undefined;
