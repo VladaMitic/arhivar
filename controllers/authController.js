@@ -143,7 +143,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     const resetURL = `${req.protocol}://${req.get(
       'host'
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    )}/change-password/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
   } catch (err) {
     user.passwordResetToken = undefined;
@@ -160,7 +160,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message:
-      'Токен је послат на Вашу епошту! Уколико не видите поруку у вашем сандучету, моломо Вас проверите фолдер Spam (Непожељно)',
+      'Токен је послат на Вашу епошту! Уколико не видите поруку у вашем сандучету, молимо Вас проверите фолдер Spam (Непожељно)',
   });
 });
 
