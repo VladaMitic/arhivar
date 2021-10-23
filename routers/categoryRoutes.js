@@ -12,12 +12,17 @@ router
   .get(
     categoryController.aliasActiveCategory,
     authController.setUserIdToQuery,
+    categoryController.aliasSortByBaseNumber,
     categoryController.getAllCategory
   );
 
 router
   .route('/')
-  .get(authController.setUserIdToQuery, categoryController.getAllCategory)
+  .get(
+    authController.setUserIdToQuery,
+    categoryController.aliasSortByBaseNumber,
+    categoryController.getAllCategory
+  )
   .post(authController.setUserIdToBody, categoryController.createCategory);
 
 router

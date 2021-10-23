@@ -6,6 +6,11 @@ exports.aliasActiveCategory = (req, res, next) => {
   next();
 };
 
+exports.aliasSortByBaseNumber = (req, res, next) => {
+  req.query.sort = 'baseNumber';
+  next();
+};
+
 exports.getAllCategory = factory.getAll(Category);
 exports.getCategory = factory.getOne(Category);
 exports.createCategory = factory.createOne(Category);

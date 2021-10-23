@@ -12,16 +12,22 @@ const categorySchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      maxLength: [20, 'Назив категорије не може бити дужи од 20 слова'],
+      maxLength: [100, 'Назив категорије не може бити дужи од 100 слова'],
       minLength: [4, 'Назив категорије не може бити краћи од 4 слова'],
       required: [true, 'Морате унети име категорије'],
     },
     shelfLife: {
-      type: Number,
+      type: mongoose.Schema.Types.Mixed,
       trim: true,
-      max: [100, 'Рок чувања не може бити већи од 100 година'],
-      min: [1, 'Рок чувања не може бити мањи од 1 године'],
+      // max: [100, 'Рок чувања не може бити већи од 100 година'],
+      // min: [1, 'Рок чувања не може бити мањи од 1 године'],
       required: [true, 'Морате унети рок чувања'],
+      validate: {
+        validator: function (val) {
+          return (val >= 1 && val <= 100) || val === 'трајно';
+        },
+        message: 'Рок чувања може бити између 1 и 100 година, или трајно',
+      },
     },
     active: {
       type: Boolean,

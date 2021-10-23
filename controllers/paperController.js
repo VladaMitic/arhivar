@@ -4,11 +4,6 @@ const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
-exports.aliasCurentYearPapers = (req, res, next) => {
-  req.query.sort = '-createdAt';
-  next();
-};
-
 //seting arhived field, those that are set on preparing by previous actions, to notarhive (eg. reset arhive process when it is braked)
 exports.setPreparingOnNotarhived = catchAsync(async (req, res, next) => {
   const queryObj = { ...req.query };

@@ -26,6 +26,7 @@ router.route('/recSendData').get(paperController.getRecipientsSenders);
 router
   .route('/countAllPapers')
   .get(authController.setUserIdToQuery, paperController.countAllPapers);
+
 router
   .route('/countCurrentYearPapers')
   .get(
@@ -39,7 +40,6 @@ router
   .get(
     authController.setUserIdToQuery,
     setCurrentYear.setCurrentYear,
-    paperController.aliasCurentYearPapers,
     paperController.getAllPaper
   );
 
