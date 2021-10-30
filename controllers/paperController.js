@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Paper = require('../models/paperModel');
+const Category = require('../models/categoryModel');
 const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -95,7 +96,7 @@ exports.setPreparingOnSelectedPapers = catchAsync(async (req, res, next) => {
 });
 
 exports.createArhiveTemplate = catchAsync(async (req, res, next) => {
-  const arhiveTemplate = await Paper.aggregate([
+  const arhive = await Paper.aggregate([
     {
       $match: {
         user: mongoose.Types.ObjectId(req.user.id),
@@ -113,12 +114,25 @@ exports.createArhiveTemplate = catchAsync(async (req, res, next) => {
       },
     },
     {
-      $addFields: { baseNumber: '$_id' },
+      $addFields: {
+        baseNumber: '$_id',
+        shelfLifeTo: '',
+      },
     },
     {
       $project: { _id: 0 },
     },
   ]);
+  const arhiveTemplate = await Category.populate(arhive, {
+    path: 'baseNumber',
+  });
+  arhiveTemplate.forEach((template) => {
+    const year = new Date(Date.now()).getFullYear();
+    template.shelfLifeTo =
+      template.baseNumber.shelfLife === 'трајно'
+        ? 'трајно'
+        : year + template.baseNumber.shelfLife;
+  });
   res.status(200).json({
     status: 'sucess',
     data: {
