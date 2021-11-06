@@ -22,7 +22,7 @@ const paperSchema = new mongoose.Schema(
     recipientSender: {
       type: String,
       trim: true,
-      maxLength: [20, 'Име примаоца/пошиљаоца не може бити дуже од 20 слова'],
+      maxLength: [100, 'Име примаоца/пошиљаоца не може бити дуже од 100 слова'],
       minLength: [2, 'Име примаоца/пошиљаоца не може бити краће од 2 слова'],
       required: [true, 'Морате унети име примаоца/пошиљаоца'],
     },

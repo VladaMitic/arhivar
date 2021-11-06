@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const Paper = require('./paperModel');
 
+const yearNow = new Date(Date.now()).getFullYear();
+
 const arhiveSchema = new mongoose.Schema(
   {
     baseNumber: {
       type: mongoose.Schema.ObjectId,
       ref: 'Category',
-      required: [true, 'Архива мора имати основни број архивираних докуманата'],
+      required: [true, 'Архива мора имати основни број архивираних докумената'],
       trim: true,
     },
     subnumbers: {
@@ -58,16 +60,16 @@ const arhiveSchema = new mongoose.Schema(
       type: Date,
     },
     shelfLifeTo: {
-      type: Number,
+      type: mongoose.Schema.Types.Mixed,
       trim: true,
-      min: [
-        2021,
-        'Година до када се документа из архиве чувају не може бити мања од 2021',
-      ],
-      max: [
-        2150,
-        'Година до када се документа из архиве чувају не може бити већа од 2150',
-      ],
+      validate: {
+        validator: function (val) {
+          return (val >= yearNow && val <= yearNow + 100) || val === 'трајно';
+        },
+        message: `Рок чувања може бити између ${yearNow} и ${
+          yearNow + 100
+        } године, или трајно`,
+      },
     },
     remark: {
       type: String,

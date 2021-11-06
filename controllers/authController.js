@@ -54,11 +54,11 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: email })
     .select('+password')
     .select('+active');
-  if (!user.active) {
-    return next(new AppError('Кориснички налог је обрисан'), 401);
-  }
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Неисправна епошта и лозинка', 401));
+  }
+  if (!user.active) {
+    return next(new AppError('Кориснички налог је обрисан'), 401);
   }
 
   createAndSendToken(user, 200, req, res);

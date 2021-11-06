@@ -131,7 +131,7 @@ exports.createArhiveTemplate = catchAsync(async (req, res, next) => {
     template.shelfLifeTo =
       template.baseNumber.shelfLife === 'трајно'
         ? 'трајно'
-        : year + template.baseNumber.shelfLife;
+        : year + template.baseNumber.shelfLife * 1;
   });
   res.status(200).json({
     status: 'sucess',
