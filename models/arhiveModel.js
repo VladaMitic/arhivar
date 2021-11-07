@@ -64,7 +64,9 @@ const arhiveSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (val) {
-          return (val >= yearNow && val <= yearNow + 100) || val === 'трајно';
+          return (
+            (val * 1 >= yearNow && val * 1 <= yearNow + 100) || val === 'трајно'
+          );
         },
         message: `Рок чувања може бити између ${yearNow} и ${
           yearNow + 100
