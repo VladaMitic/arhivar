@@ -10,7 +10,7 @@ exports.aliasNotDestroyedPapers = (req, res, next) => {
   req.query.recordNumber = 'N/A';
   req.query.sort = 'shelfLifeTo';
   req.query.fields =
-    'baseNumber,subnumbers,numberOfPapers,content,shelfLifeTo,createdAt';
+    'baseNumber,subnumbers,numberOfPapers,content,shelfLifeTo,createdAt,remark';
   next();
 };
 
